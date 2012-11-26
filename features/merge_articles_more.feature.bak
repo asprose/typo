@@ -1,0 +1,27 @@
+Feature: Merge Articles More
+  As a blog administrator
+  In order be avoid similar duplicate articles from multiple bloggers
+  I want to be able to merge articles on my blog
+
+  Background:
+    Given the blog is set up
+    And I am logged into the admin panel
+
+  Scenario: When articles are merged, the merged article should have one author (either one of the authors of the two original articles).
+    Given I am on the home page
+    When I follow "Merge Me 1 Merge Me 2 Combined"
+ 	Then I should see "admin"
+	And I should not see "asprose"
+
+  Scenario: Comments on each of the two original articles need to all carry over and point to the new, merged article.
+    Given I am on the home page
+    When I follow "Merge Me 1 Merge Me 2 Combined"
+	Then I should see "Gloomy"
+	And I should see "Peppermint"
+
+  Scenario: The title of the new article should be the title from either one of the merged articles.
+    Given I am on the home page
+    When I follow "Merge Me 1 Merge Me 2 Combined"
+	Then I should see "Merge Me 1 Merge Me 2 Combined"
+
+	

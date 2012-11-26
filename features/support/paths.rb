@@ -17,6 +17,10 @@ module NavigationHelpers
       '/'
     when /^the new article page$/
       '/admin/content/new'
+    when /^the edit article (.*) page$/
+      '/admin/content/edit/'+$1
+    when /^the edit page for \"(.*)\"$/ 
+	  edit_article_path(Article.find_by_title($1))
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

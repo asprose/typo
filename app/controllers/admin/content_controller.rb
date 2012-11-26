@@ -26,9 +26,25 @@ class Admin::ContentController < Admin::BaseController
   def new
     new_or_edit
   end
+  
+  def merge
+	@merge_from_article = Article.find_by_id(params[:merge_from])
+	@merge_with_article = Article.find_by_id(params[:merge_with])
+	@merged_article = Article.new
+	@merged_article.body = @merge_from_article.body + @merge_with_article.body
+	@merged_article.title = @merge_from_article.title + " new"
+	@merged_article.author = @merge_from_article.author
+	@merged_article.published = 1
+	if @merged_article.save!
+		flash[:notice] = _("Articles Merged.")
+	else
+		flash[:error] = _("Merge Error.")
+	end
+	redirect_to :action => 'index'
+  end
 
   def edit
-    @article = Article.find(params[:id])
+    @article = Article.find_by_id(params[:id])
     unless @article.access_by? current_user
       redirect_to :action => 'index'
       flash[:error] = _("Error, you are not allowed to perform this action")
@@ -240,4 +256,5 @@ class Admin::ContentController < Admin::BaseController
   def setup_resources
     @resources = Resource.by_created_at
   end
+  
 end

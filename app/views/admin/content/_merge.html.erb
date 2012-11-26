@@ -1,0 +1,9 @@
+<div class=''>
+    <h4><%= _("Merge Articles") %></h4>
+	<%= form_tag({:controller => "admin/content", :action => "merge"}, :method => "put", :class => 'article') do %>
+	<%= label_tag(:merge_with, "Article ID") %>
+	<%= text_field_tag(:merge_with) %>
+	<%= hidden_field_tag(:merge_from, @article.id ) %>
+	<%= submit_tag("Merge") %>
+	<% end %>
+</div>

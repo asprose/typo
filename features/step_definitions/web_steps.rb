@@ -40,7 +40,13 @@ Given /^the blog is set up$/ do
                 :email => 'joe@snow.com',
                 :profile_id => 1,
                 :name => 'admin',
-                :state => 'active'})
+                :state => 'active' })
+  User.create!({:login => 'asprose',
+                :password => 'aaaaaaaa',
+                :email => 'asprose@snow.com',
+                :profile_id => 2,
+                :name => 'asprose',
+                :state => 'active' })
 end
 
 And /^I am logged into the admin panel$/ do
@@ -52,6 +58,31 @@ And /^I am logged into the admin panel$/ do
     page.should have_content('Login successful')
   else
     assert page.has_content?('Login successful')
+  end
+end
+
+Given /^I am logged in as an? "([^\"]*)"$/ do |role|
+  visit '/accounts/logout'
+  if role=='admin' then
+	fill_in 'user_login', :with => "admin"
+  else
+    fill_in 'user_login', :with => "asprose"
+  end
+  fill_in 'user_password', :with => "aaaaaaaa"
+  click_button 'Login'
+  if page.respond_to? :should
+    page.should have_content('Login successful')
+  else
+    assert page.has_content?('Login successful')
+  end
+end
+ 
+And /^I am (not|truly) an? (.*)$/ do |bool, role|
+  #admin_signed_in?
+  if(bool=='not') 
+	#assert !@current_user.has_role?(role)
+  else
+	#assert @current_user.has_role?(role)
   end
 end
 
